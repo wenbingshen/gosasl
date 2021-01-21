@@ -180,7 +180,7 @@ func (m GSSAPIMechanism) getConfig() *MechanismConfig {
 }
 
 type GSSAPIContext struct {
-	DebugLog       bool
+	DebugLog       boolUnwrap
 	RunAsService   bool
 	ServiceName    string
 	ServiceAddress string
@@ -276,13 +276,17 @@ func (c *GSSAPIContext) unwrap(original []byte) (unwrapped []byte, err error) {
 	if original == nil {
 		return
 	}
+	log.Println("before c.MakeBufferBytes")
 	_original, err := c.MakeBufferBytes(original)
+	log.Println("after c.MakeBufferBytes")
 	defer _original.Release()
 
 	if err != nil {
 		return nil, err
 	}
+	log.Println("before c.contextId.Unwrap")
 	unwrappedBuffer, _, _, err := c.contextId.Unwrap(_original)
+	log.Println("after c.contextId.Unwrap")
 	defer unwrappedBuffer.Release()
 	if err != nil {
 		return nil, err
