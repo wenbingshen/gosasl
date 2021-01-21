@@ -47,12 +47,15 @@ func (m *GSSAPIMechanism) start() ([]byte, error) {
 }
 
 func (m *GSSAPIMechanism) step(challenge []byte) ([]byte, error) {
+	log.Println("gssapi receive token= %s", string(challenge))
 	if m.negotiationStage == 0 {
+		log.Println("gssapi routing negotiationStage 0 ")
 		err := initClientContext(m.context, m.service+"/"+m.host, nil)
 		m.negotiationStage = 1
 		return m.context.token, err
 
 	} else if m.negotiationStage == 1 {
+		log.Println("gssapi routing negotiationStage 1 ")
 		err := initClientContext(m.context, m.service+"/"+m.host, challenge)
 		if err != nil {
 			log.Fatal(err)
@@ -76,6 +79,7 @@ func (m *GSSAPIMechanism) step(challenge []byte) ([]byte, error) {
 		}
 		return m.context.token, nil
 	} else if m.negotiationStage == 2 {
+		log.Println("gssapi routing negotiationStage 2 ")
 		data, err := m.context.unwrap(challenge)
 		if err != nil {
 			return nil, err
