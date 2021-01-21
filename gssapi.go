@@ -180,7 +180,7 @@ func (m GSSAPIMechanism) getConfig() *MechanismConfig {
 }
 
 type GSSAPIContext struct {
-	DebugLog       boolUnwrap
+	DebugLog       bool
 	RunAsService   bool
 	ServiceName    string
 	ServiceAddress string
