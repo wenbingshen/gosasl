@@ -80,7 +80,9 @@ func (m *GSSAPIMechanism) step(challenge []byte) ([]byte, error) {
 		return m.context.token, nil
 	} else if m.negotiationStage == 2 {
 		log.Println("gssapi routing negotiationStage 2 ")
+		log.Println("before m.context.unwrap ")
 		data, err := m.context.unwrap(challenge)
+		log.Println("after m.context.unwrap ")
 		if err != nil {
 			return nil, err
 		}
@@ -90,8 +92,9 @@ func (m *GSSAPIMechanism) step(challenge []byte) ([]byte, error) {
 		qopBits := data[0]
 		data[0] = 0
 		m.serverMaxLength = int(binary.BigEndian.Uint32(data))
-
+		log.Println("before m.selectQop ")
 		m.qop, err = m.selectQop(qopBits)
+		log.Println("after m.selectQop ")
 		// The client doesn't support or want any of the security layers offered by the server
 		if err != nil {
 			m.MaxLength = 0
