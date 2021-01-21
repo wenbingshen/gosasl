@@ -1,5 +1,5 @@
-module github.com/beltran/gosasl
+module github.com/wenbingshen/gosasl
 
 go 1.14
 
-require github.com/beltran/gssapi v0.0.0-20200324152954-d86554db4bab
+require github.com/wenbingshen/gssapi v0.0.1
